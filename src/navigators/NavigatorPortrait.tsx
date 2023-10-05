@@ -30,11 +30,11 @@ useEffect(() => {
             component={Link} to={i.to} key={i.to}>{i.label}</ListItem>)
     }
     return <Box sx={{ marginTop: { xs: "15vh", sm: "20vh" } }}>
-        <AppBar sx={{backgroundColor:'#6a5140'}} position="fixed">
-            <Toolbar><IconButton onClick={toggleOpen} sx={{ color: '#e6b162' }}>
+        <AppBar sx={{backgroundColor:'#9BA29D'}} position="fixed">
+            <Toolbar><IconButton onClick={toggleOpen} sx={{ color: '#E7E2DC' }}>
                 <Menu />
             </IconButton>
-                <Typography sx={{ width: "100%", textAlign: "center", fontSize: "1.5em", color: '#e6b162'}}>
+                <Typography sx={{ width: "100%", textAlign: "center", fontSize: "1.5em", color: '#E7E2DC'}}>
                     {getTitle()}
                 </Typography>
                 <Drawer open={flOpen} onClose={toggleOpen} anchor="left">

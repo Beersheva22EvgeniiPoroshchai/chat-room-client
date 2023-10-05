@@ -1,5 +1,5 @@
 import { Block, Delete,  } from "@mui/icons-material";
-import { Box, Button, Grid, TextField, useTheme } from "@mui/material"
+import { Box, Button, Grid, TextField, colors, useTheme } from "@mui/material"
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useDispatch } from "react-redux";
 import { useDispatchCode, useSelectorAccounts, useSelectorMessages } from "../hooks/hooks";
@@ -13,30 +13,21 @@ import Message from "../model/Message";
 import TypeSendMessage from "../components/TypeSendMessage";
 import SetMessages from "../components/SetMessages";
 
+import { UserStatusType } from "../model/UserStatusType";
 
-const columnsCommon: GridColDef[] = [
-    {
-        field: "id", headerName: 'Username', flex: 0.5, headerClassName: 'dat-grid-header',
-        align: 'center', headerAlign: 'center' 
-    },
-    
-    {
-        field: "status", headerName: 'Connection status', flex: 0.5, headerClassName: 'dat-grid-header',
-        align: 'center', headerAlign: 'center' 
-    }
-];
 
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
+
+// const style = {
+//     position: 'absolute' as 'absolute',
+//     top: '50%',
+//     left: '50%',
+//     transform: 'translate(-50%, -50%)',
+//     width: 400,
+//     bgcolor: 'background.paper',
+//     border: '2px solid #000',
+//     boxShadow: 24,
+//     p: 4,
+// };
 
 const initialMessage: Message = {
     to: '', from: '', text: ''
@@ -48,27 +39,53 @@ const initialMessage: Message = {
 
 
 const Contacts: React.FC = () => {
-    
+    const showBlockIcon = useRef<boolean>(true);
 
     const columnsAdmin: GridColDef[] = [
         {
-            field: 'actions', headerName: 'Actions', flex: 0.5, headerClassName: 'dat-grid-header',
+            field: 'actions', headerName: 'Actions', flex: 0.5, headerClassName: 'data-grid-header',
             align: 'center', headerAlign: 'center', type: "actions", getActions: (params) => {
                if (params.id.toString().includes('admin')) {
                 return [];
                } 
-                    return [
-                    <GridActionsCellItem label="remove" icon={<Delete />}
-                        onClick={() => removeUser(params.id)
-                        } />,
-                    <GridActionsCellItem label="block" icon={<Block />}
-                        onClick={() => blockUser(params.row)
-                        } />
-                        ];
-                }
-        }
-       ];
+               const findUser = accounts.find(acc => acc?.id == params.id);
+               accounts.find(acc => acc?.status == 'blocked');
+      
+      const actions = [
+        <GridActionsCellItem label="remove" icon={<Delete />}
+          onClick={() => removeUser(params.id)}
+        />,
+      ];
 
+      if (findUser?.status != 'blocked' && showBlockIcon) {
+        actions.push(
+          <GridActionsCellItem label="block" icon={<Block />}
+            onClick={() => blockUser(params.row)}
+          />
+        );
+      }
+
+      return actions;
+    },
+  },
+];
+
+
+
+       const columnsCommon: GridColDef[] = [
+        {
+            field: "id", headerName: 'Username', flex: 0.5, headerClassName: 'data-grid-header',
+            align: 'center', headerAlign: 'center'
+        },
+        
+        {
+            field: "status", headerName: 'Connection status', flex: 0.5, headerClassName: 'data-grid-header',
+            align: 'center', headerAlign: 'center', renderCell: params => {
+                const textColor = params.value == "online" ? 'green' : params.value == "offline" ? 'blue' : 'red';
+                return <span style={{ color: textColor }}>{params.value}</span>;
+            }
+        }
+    ];
   
        const [message, setMessage] = useState<Message>(initialMessage);
        const dispatch = useDispatchCode();
@@ -84,8 +101,8 @@ const Contacts: React.FC = () => {
        const confirmFn = useRef<any>(null);
        const user = useRef<UserData | undefined>();
        const client = useRef<string>('');
-
-
+       
+       
        function getColumns(): GridColDef[] {
         let res: GridColDef[] = columnsCommon;
         if (userData && userData.role == 'admin') {

@@ -6,6 +6,7 @@ import UserData from "../model/UserData";
 import { Subscription } from "rxjs";
 import { userSevice } from "../config/service-config";
 import Message from "../model/Message";
+import { useSelectorAuth } from "../redux/store";
 
 export function useDispatchCode() {
     const dispatch = useDispatch();
@@ -71,3 +72,30 @@ export function useSelectorMessages() {
     }, []);
     return messages;
 }
+
+
+
+
+export function useSelectorMessagesByIds(idTo: any, idFrom: any) {
+    const dispatch = useDispatchCode()
+    const [messages, setMessages] = useState<Message[]>([]);
+    useEffect(() => {
+        const subscription: Subscription = userSevice.getIncomingMessages(idTo, idFrom)
+            .subscribe({
+                next(messArray: Message[] | string) {
+                    let errorMessage: string = '';
+                    if (typeof messArray === 'string') {
+                        errorMessage = messArray;
+                    } else {
+                        setMessages(messArray);
+                    }
+                    dispatch(errorMessage, '');
+
+                }
+            });
+        return () => subscription.unsubscribe();
+    }, []);
+    return messages;
+
+
+    }

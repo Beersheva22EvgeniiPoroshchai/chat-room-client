@@ -1,3 +1,4 @@
+import './App.css'
 import { useMemo } from 'react';
 import routesConf from './config/routes-config.json'
 import UserData from './model/UserData';
@@ -84,13 +85,11 @@ const App: React.FC = () => {
         <Route path="signin" element={<SignIn/>}/>
         <Route path="signup" element={<SignUp/>}/>
         <Route path="aboutus" element={<AboutUs/>}/>
-        <Route path="contacts" element={<Contacts/>}/>
         <Route path="inmessages" element={<IncomingMessages/>}/>
         <Route path="outmessages" element={<OutcomingMessages/>}/>
-        <Route path="chat" element={<Chat/>}/>
+        <Route path="chat" element={<Contacts/>}/>
         <Route path="signout" element={<SignOut/>}/>
         <Route path="signup" element={<SignUp/>}/>
-        <Route path="adminmanag" element={<AdminManagement/>}/>
         <Route path="/*" element={<NotFound/>}/>
     </Route>
   </Routes>

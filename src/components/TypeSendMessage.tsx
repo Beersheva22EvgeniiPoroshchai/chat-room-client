@@ -1,6 +1,8 @@
-import React from "react";
-import { Box, Button, TextField } from "@mui/material";
+import React, { useRef, useState } from "react";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import Message from "../model/Message";
+import { useSelectorAccounts } from "../hooks/hooks";
+import { useSelectorAuth } from "../redux/store";
 
 type Props = {
     onClickFn: (message: Message) => void;
@@ -9,8 +11,13 @@ type Props = {
     message: Message;
 }
 
+
 const TypeSendMessage: React.FC<Props> = (props) => {
-    return (
+    
+  const showSendButton = useRef<boolean>(true);
+  const account = useSelectorAuth();
+  
+  return (
         <Box
           sx={{
             display: "flex",
@@ -28,13 +35,17 @@ const TypeSendMessage: React.FC<Props> = (props) => {
             onChange={props.onChangeFn}
             value={props.value}
           />
+          {account?.status!= 'blocked' && showSendButton? 
           <Button
             onClick={() => props.onClickFn(props.message)}
             variant="contained"
             color="primary"
+          
           >
             Send message
-          </Button>
+          </Button> : 
+          <Typography variant="h6" fontSize="1.8em" fontFamily="monospace" color="red">
+          You has been blocked by admin 😕 </Typography>}
         </Box>
       );
 }

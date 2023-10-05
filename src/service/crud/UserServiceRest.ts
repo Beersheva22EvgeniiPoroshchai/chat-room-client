@@ -1,20 +1,18 @@
-import { Observable, Subscriber } from "rxjs";
+import { Observable, Subscriber, of } from "rxjs";
 import UserData from "../../model/UserData";
 import { AUTH_DATA_JWT } from "../auth/AuthServiceJwt";
 import UserService from "../crud/UserService";
 import Message from "../../model/Message";
+import { MessageSharp } from "@mui/icons-material";
 
 class Cache {
     cacheMessage: Message[] = [];
-
     addToCache(message: Message) {
         this.cacheMessage.push(message);
 }
-
     getCache() {
         return this.cacheMessage;
 }
-
 
 }
 
@@ -73,6 +71,8 @@ export default class UserServiceRest implements UserService {
     private subscriber: Subscriber<string|UserData[]> | undefined;
     private observableMessages: Observable<Message[] | string> | null = null;
     private subscriberMessages: Subscriber<string|Message[]> | undefined;
+    private observableMessagesIncom: Observable<Message[] | string> | null = null;
+    private subscriberMessagesIncom: Subscriber<string|Message[]> | undefined;
     private cache = new Cache();
     private urlService:string;
     private urlWebsocket:string;
@@ -90,15 +90,22 @@ async blockUser(userData: UserData): Promise<UserData> {
     return await response.json();
 }
 
-    // private getUrlWithId(id: any): string {
-    //     return `${this.urlService}/${id}`;
-    // }
-    
-    private subscriberNext(): void {
+        private subscriberNext(): void {
         fetchAllUsers(this.urlService).then(users => {
                 this.subscriber?.next(users);
         })
         .catch(error => this.subscriber?.next(error));
+    }
+
+
+    async subscriberNextIncom(idFrom: any, idTo: any): Promise<void> {
+       const response = await fetchRequest(`${this.urlService}/messages/incoming?from=${idFrom}&to=${idTo}`,
+        {method: "GET"})
+        this.subscriberMessagesIncom?.next(await response.json())
+        // .then(mess => {
+        //         this.subscriberMessagesIncom?.next(mess);
+        // })
+        // .catch(error => this.subscriberMessagesIncom?.next(error));
     }
 
     async deleteUser(id: any): Promise<void> {
@@ -169,10 +176,27 @@ async blockUser(userData: UserData): Promise<UserData> {
         return this.observableMessages;
     }
 
+
+    getIncomingMessages(idTo: any, idFrom: any): Observable<Message[]|string> {
+       // if (!this.observableMessagesIncom) {
+            this.observableMessagesIncom = new Observable<Message[] | string>(subscriber => {
+                this.subscriberMessagesIncom = subscriber;
+                this.subscriberNextIncom(idTo, idFrom);
+              //  this.subscriberMessagesIncom();
+            })    
+       // }
+            return this.observableMessagesIncom;
+            
+    
+
+}
+
+    
+// /incoming?from=...&to=...  
+
     subscriberNextMessages() {
         //TODO
     }
 
-
-
 }
+

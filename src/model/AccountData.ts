@@ -1,8 +1,10 @@
+import { UserStatusType } from "./UserStatusType";
+
 type AccountData = {
     email: string,
     password: string,
     roles: string[];
-    status: 'online'|'offline'|'blocked';
+    status: UserStatusType;
 }
 
 export default AccountData;

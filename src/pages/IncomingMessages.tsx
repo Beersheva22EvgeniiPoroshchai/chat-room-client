@@ -1,6 +1,8 @@
 import { Typography } from "@mui/material"
-
+import ActualUsers from "../components/ActualUsers";
 const IncomingMessages: React.FC = () => {
-    return <Typography>IncomingMessages page</Typography>
+    
+    
+    return <ActualUsers></ActualUsers>;
 }
 export default IncomingMessages;

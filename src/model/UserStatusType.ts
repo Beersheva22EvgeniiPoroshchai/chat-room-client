@@ -1,0 +1,1 @@
+export type UserStatusType = 'online'|'offline'|'blocked';

@@ -1,4 +1,4 @@
-import { StringLiteral } from "typescript";
+import { UserStatusType } from "./UserStatusType";
 
 type UserData = {
     id?: any;
@@ -8,7 +8,7 @@ type UserData = {
     lastName?: string;
     password?: string;
     address?: string;
-    status?: 'online'| 'offline'| 'blocked';
+    status: UserStatusType;
     message?: string
 } | null
 export default UserData

@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material"
 
 const AboutUs: React.FC = () => {
-    return <Typography>AboutUs page</Typography>
+    return <Typography>How do you like it, Pavel Durov?!</Typography>
 }
 export default AboutUs;

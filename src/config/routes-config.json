@@ -4,19 +4,16 @@
     "authenticated": [
     ],
      "admin": [
-     {"to": "/contacts", "label": "Contacts", "order":2},
+     {"to": "/chat", "label": "Chat Administration", "order":2},
      {"to": "/inmessages", "label": "Incoming messages", "order":2},
      {"to": "/outmessages", "label": "Outcoming messages", "order": 4},
-     {"to": "/chat", "label": "Chat", "order": 5},
-     {"to": "/adminmanag", "label": "Admin Management", "order": 6},
-     {"to": "/signout", "label": "Sign Out","order":10}
+     {"to": "/signout", "label": "Sign Out","order":6}
     ],
 
      "noadmin": [
-        {"to": "/contacts", "label": "Contacts", "order":2},
+        {"to": "/chat", "label": "Chat", "order":2},
         {"to": "/inmessages", "label": "Incoming messages", "order":2},
         {"to": "/outmessages", "label": "Outcoming messages", "order": 4},
-        {"to": "/chat", "label": "Chat", "order": 6},
         {"to": "/signout", "label": "Sign Out","order":10}
     ],
      "noauthenticated": [
