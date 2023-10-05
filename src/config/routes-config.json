@@ -1,0 +1,27 @@
+{
+    "always": [
+],
+    "authenticated": [
+    ],
+     "admin": [
+     {"to": "/contacts", "label": "Contacts", "order":2},
+     {"to": "/inmessages", "label": "Incoming messages", "order":2},
+     {"to": "/outmessages", "label": "Outcoming messages", "order": 4},
+     {"to": "/chat", "label": "Chat", "order": 5},
+     {"to": "/adminmanag", "label": "Admin Management", "order": 6},
+     {"to": "/signout", "label": "Sign Out","order":10}
+    ],
+
+     "noadmin": [
+        {"to": "/contacts", "label": "Contacts", "order":2},
+        {"to": "/inmessages", "label": "Incoming messages", "order":2},
+        {"to": "/outmessages", "label": "Outcoming messages", "order": 4},
+        {"to": "/chat", "label": "Chat", "order": 6},
+        {"to": "/signout", "label": "Sign Out","order":10}
+    ],
+     "noauthenticated": [
+        {"to": "/signin", "label": "Sign In", "order": 1}, 
+        {"to": "/aboutus", "label": "About Us", "order": 3},
+        {"to": "/signup", "label": "Sign Up", "order": 2}
+    ]
+}
