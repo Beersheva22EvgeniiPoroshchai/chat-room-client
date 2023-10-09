@@ -30,7 +30,7 @@ export function useSelectorAccounts() {
     const dispatch = useDispatchCode();
     const [users, setUsers] = useState<UserData[]>([]);
     useEffect(() => {
-
+    
         const subscription: Subscription = userSevice.getAllUsers()
             .subscribe({
                 next(usersArray: UserData[] | string) {
@@ -48,7 +48,6 @@ export function useSelectorAccounts() {
     }, []);
     return users;
 }
-
 
 export function useSelectorMessages() {
     const dispatch = useDispatchCode();

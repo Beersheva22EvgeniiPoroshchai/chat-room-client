@@ -16,8 +16,8 @@ const SignIn: React.FC = () => {
             res && dispatch(authActions.set(res));
             inputResult = {status: res ? 'success' : 'error',
             message: res ? '' : 'Incorrect Credentials'}
-            
-        } catch (error) {
+         } 
+         catch (error) {
             
         }
         return inputResult;

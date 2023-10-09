@@ -13,8 +13,10 @@ const SetModalMessages: React.FC<Props> = (props) => {
 
     const messages = useSelectorMessagesByIds(props.idFrom, props.idTo);
 
-    return <Box sx={{border: '2px solid #3B76D2', borderRadius: '10px', minWidth:'70vw', minHeight:'12vh', mt: '1vh'}}>
+    return <Box>
+        <div style={{ maxHeight:'500px', maxWidth:'500px', overflowY: 'auto' }}>
         {messages.map(mes => <MessageItem message={mes}></MessageItem>)}
+        </div>
          </Box>
 } 
 

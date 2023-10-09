@@ -16,13 +16,12 @@ import SignOut from './pages/SignOut';
 import SignUp from './pages/SignUp';
 import AboutUs from './pages/AboutUs';
 import OutcomingMessages from './pages/OutcomingMessages';
-import Contacts from './pages/Contacts';
-import IncomingMessages from './pages/IncomingMessages';
 import Chat from './pages/Chat';
-import AdminManagement from './pages/AdminManagement';
+import IncomingMessages from './pages/IncomingMessages';
 import NotFound from './pages/NotFound';
 import { codeActions } from './redux/slices/codeSlice';
 import { Alert, Snackbar } from '@mui/material';
+
 
 //const {noauthenticated, user, admin} = routesConfig;
 
@@ -81,13 +80,12 @@ const App: React.FC = () => {
   return <BrowserRouter>
   <Routes>
     <Route path="/" element={<NavigatorDispatcher routes={routes}/>}>
-        <Route index element={<Contacts/>}/>
+        <Route path="chat" element={<Chat/>}/>
         <Route path="signin" element={<SignIn/>}/>
         <Route path="signup" element={<SignUp/>}/>
         <Route path="aboutus" element={<AboutUs/>}/>
         <Route path="inmessages" element={<IncomingMessages/>}/>
         <Route path="outmessages" element={<OutcomingMessages/>}/>
-        <Route path="chat" element={<Contacts/>}/>
         <Route path="signout" element={<SignOut/>}/>
         <Route path="signup" element={<SignUp/>}/>
         <Route path="/*" element={<NotFound/>}/>

@@ -3,5 +3,6 @@ type Message = {
     from: string,
     text: string
 }
+
 export default Message;
 

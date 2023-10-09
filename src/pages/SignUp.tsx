@@ -8,8 +8,6 @@ import { useDispatch } from "react-redux";
 import SignUpForm from "../forms/SignUpForm";
 import AccountData from "../model/AccountData";
 
-
-
 const SignUp: React.FC = () => {
    
     const dispatch = useDispatch();

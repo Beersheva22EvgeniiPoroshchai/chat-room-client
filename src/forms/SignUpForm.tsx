@@ -124,7 +124,7 @@ const SignUpForm: React.FC<Props> = ({submitFn, logInFn}) => {
         <ExistAccount/>
         <Copyright sx={{ mt: 5 }} />
         
-      </Container>
+        </Container>
 
       <Snackbar open={open} autoHideDuration={3000}
                      onClose={() => setOpen(false)}>

@@ -11,7 +11,8 @@
     ],
 
      "noadmin": [
-        {"to": "/chat", "label": "Chat", "order":2},
+
+    {"to": "/chat", "label": "Chat", "order":2},
         {"to": "/inmessages", "label": "Incoming messages", "order":2},
         {"to": "/outmessages", "label": "Outcoming messages", "order": 4},
         {"to": "/signout", "label": "Sign Out","order":10}

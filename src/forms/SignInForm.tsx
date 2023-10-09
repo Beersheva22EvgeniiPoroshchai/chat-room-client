@@ -81,8 +81,7 @@ const SignInForm: React.FC<Props> = ({ submitFn, networks }) => {
                                     name="email"
                                     autoComplete="email"
                                     autoFocus
-
-                                />
+ />
                             </Grid>
                             <Grid item xs={12} sm={6} md={12}>
                                 <TextField

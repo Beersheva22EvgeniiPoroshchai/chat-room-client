@@ -1,9 +1,9 @@
-import { Observable, Subscriber, of } from "rxjs";
+import { Observable, Subscriber } from "rxjs";
 import UserData from "../../model/UserData";
 import { AUTH_DATA_JWT } from "../auth/AuthServiceJwt";
 import UserService from "../crud/UserService";
 import Message from "../../model/Message";
-import { MessageSharp } from "@mui/icons-material";
+
 
 class Cache {
     cacheMessage: Message[] = [];
@@ -15,7 +15,6 @@ class Cache {
 }
 
 }
-
 
 async function getResponseText(response: Response): Promise<string> {
     let res = '';
@@ -93,19 +92,10 @@ async blockUser(userData: UserData): Promise<UserData> {
         private subscriberNext(): void {
         fetchAllUsers(this.urlService).then(users => {
                 this.subscriber?.next(users);
+                console.log(users);
+                
         })
         .catch(error => this.subscriber?.next(error));
-    }
-
-
-    async subscriberNextIncom(idFrom: any, idTo: any): Promise<void> {
-       const response = await fetchRequest(`${this.urlService}/messages/incoming?from=${idFrom}&to=${idTo}`,
-        {method: "GET"})
-        this.subscriberMessagesIncom?.next(await response.json())
-        // .then(mess => {
-        //         this.subscriberMessagesIncom?.next(mess);
-        // })
-        // .catch(error => this.subscriberMessagesIncom?.next(error));
     }
 
     async deleteUser(id: any): Promise<void> {
@@ -116,14 +106,14 @@ async blockUser(userData: UserData): Promise<UserData> {
     }
 
     getAllUsers(): Observable<UserData[] | string> {
-        if (!this.observable) {
+      //  if (!this.observable) {
             this.observable = new Observable<UserData[] | string>(subscriber => {
                 this.subscriber = subscriber;
                 this.subscriberNext();
                 this.connectWS()
                 return () => this.disconnectWS();
             })
-        }
+        //}
         return this.observable;
     }
 
@@ -137,13 +127,27 @@ async blockUser(userData: UserData): Promise<UserData> {
         this.webSocket = new WebSocket(this.urlWebsocket, localStorage.getItem(AUTH_DATA_JWT) || ''); 
        }
        this.webSocket.onmessage = message => {
-        console.log(message.data);
-        this.cache.addToCache(JSON.parse(message.data));
-            this.subscriberMessages?.next(this.cache.getCache());
-            this.subscriberNext()
-        }
+         let actMessageObj = JSON.parse(message.data);
+         console.log(actMessageObj);
+         this.getActions(actMessageObj);
+       }
 }
-       
+
+
+    private getActions(actMessageObj: any) {
+        switch (actMessageObj.type) {
+            case 'client':
+                this.subscriberNext();
+                break;
+                case 'message':
+                    this.cache.addToCache((actMessageObj));
+                    this.subscriberMessages?.next(this.cache.getCache());
+                    break;
+            default:
+                break;
+        }
+    }
+
     async addUser(userData: UserData): Promise<UserData> {
             if (userData?.id == 0) {
                 delete userData.id;
@@ -163,40 +167,49 @@ async blockUser(userData: UserData): Promise<UserData> {
          
     }
 
-
-    getAllMessages(): Observable<Message[] | string> {
-        if (!this.observableMessages) {
-            this.observableMessages = new Observable<Message[] | string>(subscriber => {
-                this.subscriberMessages = subscriber;
-                this.subscriberNextMessages();
-                this.connectWS()
-                return () => this.disconnectWS();
-            })
-        }
-        return this.observableMessages;
-    }
-
-
     getIncomingMessages(idTo: any, idFrom: any): Observable<Message[]|string> {
        // if (!this.observableMessagesIncom) {
             this.observableMessagesIncom = new Observable<Message[] | string>(subscriber => {
                 this.subscriberMessagesIncom = subscriber;
                 this.subscriberNextIncom(idTo, idFrom);
-              //  this.subscriberMessagesIncom();
+              
             })    
        // }
             return this.observableMessagesIncom;
-            
+        }
+
+        async subscriberNextIncom(idFrom: any, idTo: any): Promise<void> {
+            const response = await fetchRequest(`${this.urlService}/messages/incoming?from=${idFrom}&to=${idTo}`,
+             {method: "GET"})
+             this.subscriberMessagesIncom?.next(await response.json())
+             // /incoming?from=...&to=...  
+         }
+
     
+         getAllMessages(): Observable<Message[] | string> {
+            if (!this.observableMessages) {
+                this.observableMessages = new Observable<Message[] | string>(subscriber => {
+                    this.subscriberMessages = subscriber;
+                   // this.subscriberNextMessages();
+                    this.connectWS()
+                    return () => this.disconnectWS();
+                })
+            }
+            return this.observableMessages;
+        }
 
-}
+
+   async subscriberNextMessages(): Promise<void> {
+        // const response = await fetchRequest(`${this.urlService}/messages/all`,
+        //  {method: "GET"})
+        //  this.subscriberMessages?.next(await response.json())
+         
+     }
+
+
+
 
     
-// /incoming?from=...&to=...  
-
-    subscriberNextMessages() {
-        //TODO
-    }
 
 }
 

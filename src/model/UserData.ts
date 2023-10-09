@@ -11,4 +11,5 @@ type UserData = {
     status: UserStatusType;
     message?: string
 } | null
+
 export default UserData
